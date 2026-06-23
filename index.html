@@ -6,20 +6,21 @@
     <title>RAFAEL TV PANEL</title>
     <style>
         :root {
-            --bg: #0a0a12;
-            --surface: #131420;
-            --surface2: #1e1f30;
-            --border: #2d2e45;
-            --text: #e6e6fa;
-            --text-dim: #9494b8;
-            --accent: #7b61ff;
-            --glow: #7b61ff;
-            --green: #36d399;
-            --red: #f87272;
-            --yellow: #fbbf24;
-            --blue: #60a5fa;
-            --font-mono: 'Courier New', monospace;
-            --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --ml-bg: #0a0b15;
+            --ml-surface: #14162b;
+            --ml-surface2: #1d203f;
+            --ml-border: linear-gradient(135deg, #b8860b, #4169e1, #b8860b);
+            --ml-text: #f8f9ff;
+            --ml-text-dim: #a8b2d1;
+            --ml-primary: #4169e1;
+            --ml-accent: #ffd700;
+            --ml-glow: rgba(65, 105, 225, 0.6);
+            --ml-gold: #ffd700;
+            --ml-green: #36d399;
+            --ml-red: #f87272;
+            --ml-yellow: #ffb700;
+            --ml-blue: #60a5fa;
+            --font-main: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             --font-size-base: clamp(12px, 3.2vw, 15px);
             --font-size-sm: clamp(10px, 2.8vw, 13px);
             --font-size-lg: clamp(16px, 4.5vw, 20px);
@@ -34,9 +35,9 @@
         }
 
         body {
-            background: linear-gradient(135deg, #050510 0%, #0f1025 50%, #050510 100%);
-            color: var(--text);
-            font-family: var(--font-mono);
+            background: radial-gradient(circle at top, #1a1c3d 0%, #0a0b15 60%, #050510 100%);
+            color: var(--ml-text);
+            font-family: var(--font-main);
             font-size: var(--font-size-base);
             min-height: 100vh;
             display: flex;
@@ -47,6 +48,20 @@
             -webkit-tap-highlight-color: transparent;
             user-select: none;
             padding: 16px 0;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="none" stroke="rgba(255,215,0,0.05)" stroke-width="0.5" d="M20 50 L80 50 M50 20 L50 80 M30 30 L70 70 M70 30 L30 70"/></svg>');
+            opacity: 0.3;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .container {
@@ -55,43 +70,35 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 20px;
+            position: relative;
+            z-index: 1;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(15px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes glowPulse {
+            0%, 100% { text-shadow: 0 0 15px var(--ml-glow), 0 0 30px rgba(255, 215, 0, 0.4); }
+            50% { text-shadow: 0 0 8px var(--ml-glow), 0 0 15px rgba(255, 215, 0, 0.2); }
         }
 
-        @keyframes glowPulseStrong {
-            0%, 100% { text-shadow: 0 0 15px var(--glow), 0 0 30px rgba(123, 97, 255, 0.4); }
-            50% { text-shadow: 0 0 8px var(--glow), 0 0 15px rgba(123, 97, 255, 0.2); }
-        }
-
-        @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 5px var(--glow); }
-            50% { text-shadow: 0 0 2px var(--glow); }
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
+        @keyframes borderGlow {
+            0%, 100% { box-shadow: 0 0 15px rgba(65, 105, 225, 0.3), inset 0 0 8px rgba(255, 215, 0, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(65, 105, 225, 0.5), inset 0 0 12px rgba(255, 215, 0, 0.2); }
         }
 
         @keyframes float {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-5px); }
+            50% { transform: translateY(-6px); }
             100% { transform: translateY(0px); }
         }
 
-        .fade-in { animation: fadeInUp 0.6s ease-out forwards; }
-        .glow-text-strong { animation: glowPulseStrong 2.8s ease-in-out infinite; }
-        .float { animation: float 4s ease-in-out infinite; }
+        .fade-in { animation: fadeInUp 0.7s ease-out forwards; }
+        .glow-text { animation: glowPulse 3s ease-in-out infinite; }
+        .float { animation: float 5s ease-in-out infinite; }
 
         #loading-screen {
             position: fixed;
@@ -103,11 +110,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(5, 5, 16, 0.97);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
+            background: radial-gradient(circle, #14162b 0%, #0a0b15 100%);
             z-index: 9999;
-            transition: opacity 0.6s ease;
+            transition: opacity 0.7s ease;
         }
 
         #loading-screen.hidden {
@@ -115,55 +120,41 @@
             pointer-events: none;
         }
 
-        .loading-digits {
+        .loading-logo {
             font-size: var(--font-size-xxl);
             font-weight: 900;
-            font-family: var(--font-mono);
-            letter-spacing: 10px;
-            display: flex;
-            gap: 6px;
-            color: var(--accent);
-        }
-
-        .loading-digits span {
-            transition: all 0.4s ease;
-            display: inline-block;
-        }
-
-        .loading-digits span.active {
-            animation: glowPulseStrong 0.8s ease-in-out infinite;
-            transform: scale(1.15);
-        }
-
-        .loading-digits span.inactive {
-            opacity: 0.1;
-            transform: scale(0.85);
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, var(--ml-gold), var(--ml-primary), var(--ml-gold));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: glowPulse 2s ease-in-out infinite;
         }
 
         .loading-subtitle {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            letter-spacing: 2.5px;
-            animation: fadeIn 1.2s ease 2s forwards;
-            opacity: 0;
+            color: var(--ml-text-dim);
+            letter-spacing: 3px;
         }
 
         .section {
-            background: rgba(19, 20, 32, 0.75);
-            border: 1px solid var(--border);
+            background: linear-gradient(145deg, rgba(20, 22, 43, 0.9), rgba(29, 32, 63, 0.85));
+            border: 2px solid transparent;
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+            background-image: linear-gradient(145deg, rgba(20, 22, 43, 0.9), rgba(29, 32, 63, 0.85)), var(--ml-border);
             border-radius: 16px;
-            padding: 20px;
+            padding: 22px;
             width: 100%;
-            transition: all 0.35s ease;
+            transition: all 0.3s ease;
             position: relative;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
         }
 
         .section:hover {
-            border-color: var(--accent);
-            box-shadow: 0 6px 25px rgba(123, 97, 255, 0.12);
+            animation: borderGlow 2.5s ease-in-out infinite;
+            transform: translateY(-2px);
         }
 
         .section-title {
@@ -171,77 +162,92 @@
             font-size: var(--font-size-lg);
             text-align: center;
             margin-bottom: 12px;
-            letter-spacing: 1.5px;
-            color: var(--text);
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--ml-gold), var(--ml-primary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .section-subtitle {
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
+            color: var(--ml-text-dim);
             text-align: center;
-            margin-bottom: 14px;
-            letter-spacing: 0.8px;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
         }
 
         .button-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
             justify-content: center;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
         .btn {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 9px 14px;
-            border-radius: 8px;
+            background: linear-gradient(145deg, #1d203f, #14162b);
+            border: 1px solid transparent;
+            background-image: linear-gradient(145deg, #1d203f, #14162b), linear-gradient(135deg, #b8860b, #4169e1);
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+            color: var(--ml-text);
+            padding: 10px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-family: var(--font-mono);
+            font-family: var(--font-main);
             font-size: var(--font-size-sm);
+            font-weight: 500;
             transition: all 0.25s ease;
         }
 
         .btn:hover {
-            border-color: var(--accent);
-            background: #25263b;
-            transform: translateY(-1px);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.3);
+            color: var(--ml-gold);
         }
 
         .btn.active {
-            border-color: var(--accent);
-            background: rgba(123, 97, 255, 0.15);
-            box-shadow: 0 0 12px rgba(123, 97, 255, 0.25);
+            background: linear-gradient(145deg, rgba(65, 105, 225, 0.25), rgba(255, 215, 0, 0.1));
+            border-color: var(--ml-gold);
+            box-shadow: 0 0 18px rgba(65, 105, 225, 0.4);
+            color: var(--ml-gold);
             font-weight: bold;
-            color: var(--accent);
         }
 
         .ping-display {
             text-align: center;
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-top: 12px;
-            font-family: var(--font-mono);
+            color: var(--ml-text-dim);
+            margin-top: 14px;
+            padding: 8px;
+            background: rgba(20, 22, 43, 0.6);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 215, 0, 0.15);
         }
 
         .speed-row {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 14px;
+            margin-top: 16px;
             gap: 12px;
         }
 
         .speed-item {
             text-align: center;
             flex: 1;
+            padding: 10px;
+            background: rgba(20, 22, 43, 0.7);
+            border-radius: 10px;
+            border: 1px solid rgba(65, 105, 225, 0.2);
         }
 
         .speed-label {
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-bottom: 4px;
+            color: var(--ml-text-dim);
+            margin-bottom: 6px;
+            font-weight: 500;
         }
 
         .speed-value {
@@ -249,28 +255,29 @@
             font-weight: 700;
         }
 
-        .speed-value.download { color: var(--green); }
-        .speed-value.upload { color: var(--blue); }
-        .speed-value.latency { color: var(--yellow); }
+        .speed-value.download { color: var(--ml-green); }
+        .speed-value.upload { color: var(--ml-blue); }
+        .speed-value.latency { color: var(--ml-yellow); }
 
         .graph-container {
             display: flex;
             align-items: flex-end;
-            gap: 3px;
-            height: 65px;
-            margin-top: 14px;
-            padding: 0 6px;
-            background: rgba(0, 0, 0, 0.25);
-            border-radius: 6px;
-            border: 1px solid var(--border);
+            gap: 4px;
+            height: 70px;
+            margin-top: 16px;
+            padding: 0 8px;
+            background: rgba(10, 11, 21, 0.8);
+            border-radius: 8px;
+            border: 1px solid rgba(65, 105, 225, 0.25);
+            overflow: hidden;
         }
 
         .graph-bar {
             flex: 1;
-            background: linear-gradient(to top, var(--green), var(--accent));
-            border-radius: 3px;
-            transition: height 0.12s ease;
-            min-height: 2px;
+            background: linear-gradient(to top, var(--ml-primary), var(--ml-gold));
+            border-radius: 4px 4px 0 0;
+            transition: height 0.15s ease;
+            min-height: 3px;
             opacity: 0.85;
         }
 
@@ -279,19 +286,19 @@
         }
 
         .config-display {
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 16px;
-            padding-top: 42px;
-            font-family: var(--font-mono);
+            background: linear-gradient(145deg, #101226, #1a1c3d);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 12px;
+            padding: 18px;
+            padding-top: 44px;
+            font-family: monospace;
             font-size: var(--font-size-sm);
-            line-height: 1.8;
+            line-height: 1.7;
             word-break: break-all;
             white-space: pre-wrap;
-            color: var(--green);
-            min-height: 110px;
-            max-height: 300px;
+            color: var(--ml-green);
+            min-height: 120px;
+            max-height: 320px;
             overflow-y: auto;
         }
 
@@ -299,88 +306,93 @@
             position: absolute;
             top: 12px;
             right: 16px;
-            background: var(--surface);
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 6px 14px;
-            border-radius: 7px;
+            background: linear-gradient(135deg, var(--ml-primary), #2b4cb8);
+            border: none;
+            color: white;
+            padding: 7px 16px;
+            border-radius: 8px;
             cursor: pointer;
-            font-family: var(--font-mono);
+            font-family: var(--font-main);
             font-size: var(--font-size-sm);
+            font-weight: 600;
             z-index: 5;
             transition: all 0.2s ease;
+            box-shadow: 0 2px 8px rgba(65, 105, 225, 0.3);
         }
 
         .copy-btn:hover {
-            background: var(--accent);
-            color: white;
+            background: linear-gradient(135deg, #2b4cb8, var(--ml-primary));
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(65, 105, 225, 0.5);
         }
 
         .status-dot {
             display: inline-block;
-            width: 9px;
-            height: 9px;
+            width: 10px;
+            height: 10px;
             border-radius: 50%;
-            margin-right: 7px;
+            margin-right: 8px;
         }
 
-        .status-dot.green { background: var(--green); box-shadow: 0 0 7px var(--green); }
-        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 7px var(--yellow); animation: pulse 1.2s infinite; }
+        .status-dot.green { background: var(--ml-green); box-shadow: 0 0 8px var(--ml-green); }
+        .status-dot.yellow { background: var(--ml-yellow); box-shadow: 0 0 8px var(--ml-yellow); animation: pulse 1.5s infinite; }
 
-        .divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; opacity: 0.6; }
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: var(--font-size-sm); }
-        .info-label { color: var(--text-dim); }
-        .info-value { color: var(--green); font-weight: 700; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .divider { border: none; border-top: 1px solid rgba(255, 215, 0, 0.2); margin: 14px 0; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; font-size: var(--font-size-sm); }
+        .info-label { color: var(--ml-text-dim); font-weight: 500; }
+        .info-value { color: var(--ml-gold); font-weight: 700; }
 
         .dropdown-wrapper { position: relative; width: 100%; }
         .dropdown-content {
             display: none;
             position: fixed;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 10px 0;
+            background: linear-gradient(145deg, #14162b, #1d203f);
+            border: 1px solid var(--ml-gold);
+            border-radius: 12px;
+            padding: 12px 0;
             z-index: 10000;
-            max-height: 240px;
+            max-height: 260px;
             overflow-y: auto;
             width: calc(100% - 32px);
             max-width: 668px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(15px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
         }
         .dropdown-content.show { display: block; }
-        .dropdown-item { padding: 10px 14px; cursor: pointer; font-size: var(--font-size-sm); color: var(--text); transition: all 0.2s ease; }
-        .dropdown-item:hover { background: rgba(123, 97, 255, 0.12); color: var(--accent); }
-        .dropdown-item.selected { color: var(--green); font-weight: bold; background: rgba(54, 211, 153, 0.08); }
+        .dropdown-item { padding: 12px 16px; cursor: pointer; font-size: var(--font-size-sm); color: var(--ml-text); transition: all 0.2s ease; }
+        .dropdown-item:hover { background: rgba(65, 105, 225, 0.2); color: var(--ml-gold); }
+        .dropdown-item.selected { color: var(--ml-green); font-weight: bold; background: rgba(54, 211, 153, 0.1); }
 
         .log-container {
-            background: #070710;
-            border: 1px solid var(--border);
+            background: #080918;
+            border: 1px solid rgba(65, 105, 225, 0.2);
             border-radius: 10px;
-            padding: 12px;
-            max-height: 130px;
+            padding: 14px;
+            max-height: 140px;
             overflow-y: auto;
             font-size: var(--font-size-sm);
-            color: var(--text-dim);
-            margin-top: 12px;
+            color: var(--ml-text-dim);
+            margin-top: 14px;
         }
-        .log-entry { padding: 3px 0; font-family: var(--font-mono); }
-        .log-entry .time { color: #555577; margin-right: 9px; }
+        .log-entry { padding: 4px 0; font-family: monospace; }
+        .log-entry .time { color: #556699; margin-right: 10px; }
     </style>
 </head>
 <body>
 
 <div id="loading-screen">
-    <div class="loading-digits" id="loading-digits">
-        <span id="d4">R</span><span id="d0">T</span><span id="d4b">V</span>
-    </div>
-    <div class="loading-subtitle" id="loading-subtitle">RAFAEL TV PANEL SYSTEM</div>
+    <div class="loading-logo">RAFAEL TV</div>
+    <div class="loading-subtitle">LOADING SYSTEM...</div>
 </div>
 
 <div class="container" id="main-content" style="display:none;">
     <div class="section fade-in float">
-        <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:4px;">RAFAEL TV PANEL</div>
-        <div class="section-subtitle">LIBRENG INTERNET</div>
+        <div class="section-title glow-text" style="font-size:var(--font-size-xl); letter-spacing:4px;">RAFAEL TV PANEL</div>
+        <div class="section-subtitle">LIBRENG INTERNET • SMART / TNT</div>
         <hr class="divider">
         <div class="info-row"><span class="info-label">HOST:</span><span class="info-value" id="info-host">---</span></div>
         <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">rafaeltv</span></div>
@@ -388,38 +400,38 @@
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">ADDRESS SELECTOR</div>
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--ml-text-dim);">ADDRESS SELECTOR</div>
         <div class="dropdown-wrapper">
             <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
             <div class="dropdown-content" id="address-dropdown"></div>
         </div>
-        <div id="address-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div id="address-selected" style="text-align:center; margin-top:10px; font-size:var(--font-size-sm); color:var(--ml-green);"></div>
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">SNI SELECTOR</div>
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--ml-text-dim);">SNI SELECTOR</div>
         <div class="dropdown-wrapper">
             <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
             <div class="dropdown-content" id="sni-dropdown"></div>
         </div>
-        <div id="sni-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green);"></div>
-        <div class="ping-display" id="ping-display" style="margin-top:10px;">
+        <div id="sni-selected" style="text-align:center; margin-top:10px; font-size:var(--font-size-sm); color:var(--ml-green);"></div>
+        <div class="ping-display" id="ping-display">
             <span class="status-dot yellow"></span> SELECT PARAMETERS TO VIEW LIVE PING
         </div>
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">REAL-TIME MONITOR</div>
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--ml-text-dim);">REAL-TIME MONITOR</div>
         <div class="speed-row">
             <div class="speed-item">
                 <div class="speed-label">DOWNLOAD</div>
                 <div class="speed-value download" id="speed-download">0</div>
-                <div class="speed-label"><span id="speed-download-unit">KB/s</span></div>
+                <div class="speed-label"><span id="speed-download-unit">MB/s</span></div>
             </div>
             <div class="speed-item">
                 <div class="speed-label">UPLOAD</div>
                 <div class="speed-value upload" id="speed-upload">0</div>
-                <div class="speed-label"><span id="speed-upload-unit">KB/s</span></div>
+                <div class="speed-label"><span id="speed-upload-unit">MB/s</span></div>
             </div>
             <div class="speed-item">
                 <div class="speed-label">LATENCY</div>
@@ -434,10 +446,10 @@
     </div>
 
     <div class="section fade-in">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">PROTOCOL SELECTOR</div>
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--ml-text-dim);">PROTOCOL SELECTOR</div>
         <div class="button-bar" id="protocol-bar"></div>
         <hr class="divider">
-        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--text-dim);">TRANSPORT TYPE</div>
+        <div class="section-title" style="font-size:var(--font-size-sm);color:var(--ml-text-dim);">TRANSPORT TYPE</div>
         <div class="button-bar" id="transport-bar"></div>
     </div>
 
@@ -457,13 +469,14 @@
     const PROTOCOLS = ['vless', 'trojan', 'vmess', 'shadowsocks'];
     const PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'Trojan', vmess: 'VMess', shadowsocks: 'Shadowsocks' };
     
-    const TRANSPORTS = ['ws', 'hu', 'xh', 'grpc'];
-    const TRANSPORT_LABELS = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP', grpc: 'gRPC (Multiplexed)' };
+    // TINANGGAL ANG XHTTP AT GRPC, NATIra LANG WS AT HTTP UPGRADE
+    const TRANSPORTS = ['ws', 'hu'];
+    const TRANSPORT_LABELS = { ws: 'WebSocket', hu: 'HTTP Upgrade' };
 
     const PATHS = { vless: '/vless-rafaeltv', trojan: '/rafaeltv', vmess: '/vmess-rafaeltv', shadowsocks: '/ss-rafaeltv' };
 
     let selectedProtocol = 'vless';
-    let selectedTransport = 'grpc';
+    let selectedTransport = 'ws';
     let selectedAddress = currentHost;
     let selectedSNI = currentHost;
 
@@ -593,8 +606,6 @@
     function getPath() {
         let path = PATHS[selectedProtocol];
         if (selectedTransport === 'hu') path += '-hu';
-        else if (selectedTransport === 'xh') path += '-xh';
-        else if (selectedTransport === 'grpc') path += '-grpc';
         return path;
     }
 
@@ -603,26 +614,14 @@
         const sni = selectedSNI;
         const host = currentHost;
         const path = getPath();
-        const serviceName = path.substring(1);
+        const netType = (selectedTransport === 'hu') ? 'httpupgrade' : 'ws';
+        const transportParam = (selectedTransport === 'ws') ? 'type=ws&path=' : 'type=httpupgrade&path=';
 
-        if (selectedTransport === 'grpc') {
-            switch (selectedProtocol) {
-                case 'vless': return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&type=grpc&serviceName=' + serviceName + '&security=tls&fp=chrome&sni=' + sni + '#VLESS-gRPC-' + host;
-                case 'trojan': return 'trojan://' + PASS + '@' + addr + ':443?type=grpc&serviceName=' + serviceName + '&security=tls&fp=chrome&sni=' + sni + '#TROJAN-gRPC-' + host;
-                case 'vmess': {
-                    return 'vmess://' + btoa(JSON.stringify({ v: '2', ps: 'VMESS-gRPC-' + host, add: addr, port: '443', id: PASS, aid: '0', scy: 'auto', net: 'grpc', type: 'none', host: host, path: serviceName, tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1' }));
-                }
-                case 'shadowsocks': return 'ss://' + btoa('aes-256-gcm:' + PASS) + '@' + addr + ':443?type=grpc&serviceName=' + serviceName + '&security=tls&sni=' + sni + '#SS-gRPC-' + host;
-            }
-        } else {
-            const netType = (selectedTransport === 'xh') ? 'xhttp' : (selectedTransport === 'hu' ? 'httpupgrade' : 'ws');
-            const transportParam = (selectedTransport === 'ws') ? 'type=ws&path=' : 'type=http&path=';
-            switch (selectedProtocol) {
-                case 'vless': return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&' + transportParam + encodeURIComponent(path) + '&host=' + host + '&security=tls&fp=chrome&sni=' + sni + '&alpn=http%2F1.1#VLESS-' + selectedTransport.toUpperCase() + '-' + host;
-                case 'trojan': return 'trojan://' + PASS + '@' + addr + ':443?' + transportParam + encodeURIComponent(path) + '&host=' + host + '&security=tls&fp=chrome&sni=' + sni + '&alpn=http%2F1.1#TROJAN-' + selectedTransport.toUpperCase() + '-' + host;
-                case 'vmess': return 'vmess://' + btoa(JSON.stringify({ v: '2', ps: 'VMESS-' + selectedTransport.toUpperCase() + '-' + host, add: addr, port: '443', id: PASS, aid: '0', scy: 'auto', net: netType, type: 'none', host: host, path: path, tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1' }));
-                case 'shadowsocks': return 'ss://' + btoa('aes-256-gcm:' + PASS) + '@' + addr + ':443#SS-' + selectedTransport.toUpperCase() + '-' + host;
-            }
+        switch (selectedProtocol) {
+            case 'vless': return 'vless://' + PASS + '@' + addr + ':443?encryption=none&flow=none&' + transportParam + encodeURIComponent(path) + '&host=' + host + '&security=tls&fp=chrome&sni=' + sni + '&alpn=http%2F1.1#VLESS-' + selectedTransport.toUpperCase() + '-' + host;
+            case 'trojan': return 'trojan://' + PASS + '@' + addr + ':443?' + transportParam + encodeURIComponent(path) + '&host=' + host + '&security=tls&fp=chrome&sni=' + sni + '&alpn=http%2F1.1#TROJAN-' + selectedTransport.toUpperCase() + '-' + host;
+            case 'vmess': return 'vmess://' + btoa(JSON.stringify({ v: '2', ps: 'VMESS-' + selectedTransport.toUpperCase() + '-' + host, add: addr, port: '443', id: PASS, aid: '0', scy: 'auto', net: netType, type: 'none', host: host, path: path, tls: 'tls', sni: sni, fp: 'chrome', alpn: 'http/1.1' }));
+            case 'shadowsocks': return 'ss://' + btoa('aes-256-gcm:' + PASS) + '@' + addr + ':443#SS-' + selectedTransport.toUpperCase() + '-' + host;
         }
     }
 
