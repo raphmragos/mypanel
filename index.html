@@ -6,18 +6,18 @@
     <title>RAFAEL TV PANEL</title>
     <style>
         :root {
-            --bg: #121212;
-            --surface: #1e1e1e;
-            --surface2: #2a2a2a;
-            --border: #444;
-            --text: #f0f0f0;
-            --text-dim: #aaa;
-            --accent: #ffffff;
-            --glow: #ffffff;
-            --green: #2ed573;
-            --red: #ff4757;
-            --yellow: #ffa502;
-            --blue: #1e90ff;
+            --bg: #0a0a12;
+            --surface: #131420;
+            --surface2: #1e1f30;
+            --border: #2d2e45;
+            --text: #e6e6fa;
+            --text-dim: #9494b8;
+            --accent: #7b61ff;
+            --glow: #7b61ff;
+            --green: #36d399;
+            --red: #f87272;
+            --yellow: #fbbf24;
+            --blue: #60a5fa;
             --font-mono: 'Courier New', monospace;
             --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             --font-size-base: clamp(12px, 3.2vw, 15px);
@@ -34,7 +34,7 @@
         }
 
         body {
-            background: var(--bg);
+            background: linear-gradient(135deg, #050510 0%, #0f1025 50%, #050510 100%);
             color: var(--text);
             font-family: var(--font-mono);
             font-size: var(--font-size-base);
@@ -55,11 +55,11 @@
             padding: 16px;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(12px); }
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -69,22 +69,29 @@
         }
 
         @keyframes glowPulseStrong {
-            0%, 100% { text-shadow: 0 0 12px var(--glow), 0 0 24px var(--glow); }
-            50% { text-shadow: 0 0 6px var(--glow), 0 0 12px var(--glow); }
+            0%, 100% { text-shadow: 0 0 15px var(--glow), 0 0 30px rgba(123, 97, 255, 0.4); }
+            50% { text-shadow: 0 0 8px var(--glow), 0 0 15px rgba(123, 97, 255, 0.2); }
         }
 
         @keyframes glowPulseLight {
-            0%, 100% { text-shadow: 0 0 4px var(--glow); }
-            50% { text-shadow: 0 0 1px var(--glow); }
+            0%, 100% { text-shadow: 0 0 5px var(--glow); }
+            50% { text-shadow: 0 0 2px var(--glow); }
         }
 
         @keyframes pulse {
             0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
+            50% { opacity: 0.4; }
         }
 
-        .fade-in { animation: fadeInUp 0.5s ease-out forwards; }
-        .glow-text-strong { animation: glowPulseStrong 2.5s ease-in-out infinite; }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .fade-in { animation: fadeInUp 0.6s ease-out forwards; }
+        .glow-text-strong { animation: glowPulseStrong 2.8s ease-in-out infinite; }
+        .float { animation: float 4s ease-in-out infinite; }
 
         #loading-screen {
             position: fixed;
@@ -96,11 +103,11 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: rgba(18,18,18,0.96);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
+            background: rgba(5, 5, 16, 0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             z-index: 9999;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.6s ease;
         }
 
         #loading-screen.hidden {
@@ -112,57 +119,59 @@
             font-size: var(--font-size-xxl);
             font-weight: 900;
             font-family: var(--font-mono);
-            letter-spacing: 8px;
+            letter-spacing: 10px;
             display: flex;
-            gap: 4px;
-            color: var(--text);
+            gap: 6px;
+            color: var(--accent);
         }
 
         .loading-digits span {
-            transition: all 0.35s ease;
+            transition: all 0.4s ease;
             display: inline-block;
         }
 
         .loading-digits span.active {
-            animation: glowPulseStrong 0.7s ease-in-out infinite;
-            transform: scale(1.1);
+            animation: glowPulseStrong 0.8s ease-in-out infinite;
+            transform: scale(1.15);
         }
 
         .loading-digits span.inactive {
-            opacity: 0.08;
-            text-shadow: none;
-            transform: scale(0.9);
+            opacity: 0.1;
+            transform: scale(0.85);
         }
 
         .loading-subtitle {
-            margin-top: 20px;
+            margin-top: 25px;
             font-size: var(--font-size-sm);
-            color: #888;
-            letter-spacing: 2px;
-            animation: fadeIn 1s ease 2s forwards;
+            color: var(--text-dim);
+            letter-spacing: 2.5px;
+            animation: fadeIn 1.2s ease 2s forwards;
             opacity: 0;
         }
 
         .section {
-            background: var(--surface);
+            background: rgba(19, 20, 32, 0.75);
             border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px;
+            border-radius: 16px;
+            padding: 20px;
             width: 100%;
-            transition: all 0.3s ease;
+            transition: all 0.35s ease;
             position: relative;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
         }
 
         .section:hover {
-            border-color: #666;
+            border-color: var(--accent);
+            box-shadow: 0 6px 25px rgba(123, 97, 255, 0.12);
         }
 
         .section-title {
             font-weight: 700;
             font-size: var(--font-size-lg);
             text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
+            margin-bottom: 12px;
+            letter-spacing: 1.5px;
             color: var(--text);
         }
 
@@ -170,47 +179,49 @@
             font-size: var(--font-size-sm);
             color: var(--text-dim);
             text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+            letter-spacing: 0.8px;
         }
 
         .button-bar {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
+            gap: 8px;
             justify-content: center;
-            margin-top: 6px;
+            margin-top: 8px;
         }
 
         .btn {
             background: var(--surface2);
             border: 1px solid var(--border);
             color: var(--text);
-            padding: 7px 12px;
-            border-radius: 6px;
+            padding: 9px 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .btn:hover {
-            border-color: #888;
-            background: #333;
+            border-color: var(--accent);
+            background: #25263b;
+            transform: translateY(-1px);
         }
 
         .btn.active {
             border-color: var(--accent);
-            background: #333;
-            box-shadow: 0 0 10px rgba(255,255,255,0.1);
+            background: rgba(123, 97, 255, 0.15);
+            box-shadow: 0 0 12px rgba(123, 97, 255, 0.25);
             font-weight: bold;
+            color: var(--accent);
         }
 
         .ping-display {
             text-align: center;
             font-size: var(--font-size-sm);
             color: var(--text-dim);
-            margin-top: 10px;
+            margin-top: 12px;
             font-family: var(--font-mono);
         }
 
@@ -218,8 +229,8 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 10px;
-            gap: 10px;
+            margin-top: 14px;
+            gap: 12px;
         }
 
         .speed-item {
@@ -230,6 +241,7 @@
         .speed-label {
             font-size: var(--font-size-sm);
             color: var(--text-dim);
+            margin-bottom: 4px;
         }
 
         .speed-value {
@@ -244,20 +256,22 @@
         .graph-container {
             display: flex;
             align-items: flex-end;
-            gap: 2px;
-            height: 60px;
-            margin-top: 10px;
-            padding: 0 4px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 4px;
+            gap: 3px;
+            height: 65px;
+            margin-top: 14px;
+            padding: 0 6px;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 6px;
+            border: 1px solid var(--border);
         }
 
         .graph-bar {
             flex: 1;
-            background: linear-gradient(to top, var(--green), var(--blue));
-            border-radius: 2px;
-            transition: height 0.1s ease;
+            background: linear-gradient(to top, var(--green), var(--accent));
+            border-radius: 3px;
+            transition: height 0.12s ease;
             min-height: 2px;
+            opacity: 0.85;
         }
 
         .config-wrapper {
@@ -267,48 +281,54 @@
         .config-display {
             background: var(--surface2);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 14px;
-            padding-top: 40px;
+            border-radius: 10px;
+            padding: 16px;
+            padding-top: 42px;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
-            line-height: 1.7;
+            line-height: 1.8;
             word-break: break-all;
             white-space: pre-wrap;
             color: var(--green);
-            min-height: 100px;
-            max-height: 280px;
+            min-height: 110px;
+            max-height: 300px;
             overflow-y: auto;
         }
 
         .copy-btn {
             position: absolute;
-            top: 10px;
-            right: 14px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 5px 12px;
-            border-radius: 6px;
+            top: 12px;
+            right: 16px;
+            background: var(--surface);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 14px;
+            border-radius: 7px;
             cursor: pointer;
             font-family: var(--font-mono);
             font-size: var(--font-size-sm);
             z-index: 5;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: var(--accent);
+            color: white;
         }
 
         .status-dot {
             display: inline-block;
-            width: 8px;
-            height: 8px;
+            width: 9px;
+            height: 9px;
             border-radius: 50%;
-            margin-right: 6px;
+            margin-right: 7px;
         }
 
-        .status-dot.green { background: var(--green); box-shadow: 0 0 6px var(--green); }
-        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
+        .status-dot.green { background: var(--green); box-shadow: 0 0 7px var(--green); }
+        .status-dot.yellow { background: var(--yellow); box-shadow: 0 0 7px var(--yellow); animation: pulse 1.2s infinite; }
 
-        .divider { border: none; border-top: 1px solid var(--border); margin: 8px 0; opacity: 0.5; }
-        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; font-size: var(--font-size-sm); }
+        .divider { border: none; border-top: 1px solid var(--border); margin: 10px 0; opacity: 0.6; }
+        .info-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; font-size: var(--font-size-sm); }
         .info-label { color: var(--text-dim); }
         .info-value { color: var(--green); font-weight: 700; }
 
@@ -318,51 +338,52 @@
             position: fixed;
             background: var(--surface2);
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 8px 0;
+            border-radius: 10px;
+            padding: 10px 0;
             z-index: 10000;
-            max-height: 220px;
+            max-height: 240px;
             overflow-y: auto;
             width: calc(100% - 32px);
             max-width: 668px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(15px);
         }
         .dropdown-content.show { display: block; }
-        .dropdown-item { padding: 8px 12px; cursor: pointer; font-size: var(--font-size-sm); color: var(--text); }
-        .dropdown-item:hover { background: #3a3a3a; }
-        .dropdown-item.selected { color: var(--green); font-weight: bold; }
+        .dropdown-item { padding: 10px 14px; cursor: pointer; font-size: var(--font-size-sm); color: var(--text); transition: all 0.2s ease; }
+        .dropdown-item:hover { background: rgba(123, 97, 255, 0.12); color: var(--accent); }
+        .dropdown-item.selected { color: var(--green); font-weight: bold; background: rgba(54, 211, 153, 0.08); }
 
         .log-container {
-            background: #0a0a0a;
+            background: #070710;
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 10px;
-            max-height: 120px;
+            border-radius: 10px;
+            padding: 12px;
+            max-height: 130px;
             overflow-y: auto;
             font-size: var(--font-size-sm);
             color: var(--text-dim);
-            margin-top: 10px;
+            margin-top: 12px;
         }
-        .log-entry { padding: 2px 0; font-family: var(--font-mono); }
-        .log-entry .time { color: #666; margin-right: 8px; }
+        .log-entry { padding: 3px 0; font-family: var(--font-mono); }
+        .log-entry .time { color: #555577; margin-right: 9px; }
     </style>
 </head>
 <body>
 
 <div id="loading-screen">
     <div class="loading-digits" id="loading-digits">
-        <span id="d4">4</span><span id="d0">0</span><span id="d4b">4</span>
+        <span id="d4">R</span><span id="d0">T</span><span id="d4b">V</span>
     </div>
-    <div class="loading-subtitle" id="loading-subtitle">INITIALIZING CONFIG PORTAL</div>
+    <div class="loading-subtitle" id="loading-subtitle">RAFAEL TV PANEL SYSTEM</div>
 </div>
 
 <div class="container" id="main-content" style="display:none;">
-    <div class="section fade-in">
-        <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:3px;">404 NOT FOUND GCP</div>
-        <div class="section-subtitle">RAFAEL TV EXPORT HUB</div>
+    <div class="section fade-in float">
+        <div class="section-title glow-text-strong" style="font-size:var(--font-size-xl); letter-spacing:4px;">RAFAEL TV PANEL</div>
+        <div class="section-subtitle">PREMIUM EXPORT HUB</div>
         <hr class="divider">
         <div class="info-row"><span class="info-label">HOST:</span><span class="info-value" id="info-host">---</span></div>
-        <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">saeka</span></div>
+        <div class="info-row"><span class="info-label">PASS / UUID:</span><span class="info-value">rafaeltv</span></div>
         <div class="info-row"><span class="info-label">UPTIME:</span><span class="info-value" id="runtime-display">00:00:00</span></div>
     </div>
 
@@ -372,7 +393,7 @@
             <button class="btn" id="address-dropdown-btn" style="width:100%; text-align:center;">SELECT ADDRESS ▾</button>
             <div class="dropdown-content" id="address-dropdown"></div>
         </div>
-        <div id="address-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div id="address-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green);"></div>
     </div>
 
     <div class="section fade-in">
@@ -381,8 +402,8 @@
             <button class="btn" id="sni-dropdown-btn" style="width:100%; text-align:center;">SELECT SNI ▾</button>
             <div class="dropdown-content" id="sni-dropdown"></div>
         </div>
-        <div id="sni-selected" style="text-align:center; margin-top:6px; font-size:var(--font-size-sm); color:var(--green);"></div>
-        <div class="ping-display" id="ping-display" style="margin-top:8px;">
+        <div id="sni-selected" style="text-align:center; margin-top:8px; font-size:var(--font-size-sm); color:var(--green);"></div>
+        <div class="ping-display" id="ping-display" style="margin-top:10px;">
             <span class="status-dot yellow"></span> SELECT PARAMETERS TO VIEW LIVE PING
         </div>
     </div>
@@ -408,7 +429,7 @@
         </div>
         <div class="graph-container" id="graph-container"></div>
         <div class="log-container" id="log-container">
-            <div class="log-entry"><span class="time">--:--:--</span> Engine initialized successfully.</div>
+            <div class="log-entry"><span class="time">--:--:--</span> Rafael TV Engine initialized successfully.</div>
         </div>
     </div>
 
@@ -430,25 +451,24 @@
 
 <script>
 (function() {
-    const PASS = 'saeka';
+    const PASS = 'rafaeltv';
     let currentHost = window.location.hostname || '127.0.0.1';
     
     const PROTOCOLS = ['vless', 'trojan', 'vmess', 'shadowsocks'];
     const PROTOCOL_LABELS = { vless: 'VLESS', trojan: 'Trojan', vmess: 'VMess', shadowsocks: 'Shadowsocks' };
     
-    // Added 'grpc' transport option alongside ws, hu, and xh
     const TRANSPORTS = ['ws', 'hu', 'xh', 'grpc'];
     const TRANSPORT_LABELS = { ws: 'WebSocket', hu: 'HTTP Upgrade', xh: 'XHTTP', grpc: 'gRPC (Multiplexed)' };
 
-    const PATHS = { vless: '/vless-saeka', trojan: '/saeka-tojirp', vmess: '/vmess-saeka', shadowsocks: '/ss-saeka' };
+    const PATHS = { vless: '/vless-rafaeltv', trojan: '/rafaeltv', vmess: '/vmess-rafaeltv', shadowsocks: '/ss-rafaeltv' };
 
     let selectedProtocol = 'vless';
     let selectedTransport = 'grpc';
     let selectedAddress = currentHost;
     let selectedSNI = currentHost;
 
-    let addressList = [currentHost, 'join.saekacutie.workers.dev', '104.16.0.1', '104.18.0.1'];
-    let sniList = [currentHost, 'www.google.com', 'www.youtube.com', 'www.facebook.com'];
+    let addressList = [currentHost, 'join.rafaeltv.workers.dev', '104.16.0.1', '104.18.0.1'];
+    let sniList = [currentHost, 'www.google.com', 'www.youtube.com', 'www.facebook.com', 'fcmtoken.googleapis.com'];
 
     let speedHistory = [];
     let lastUpdateTime = Date.now();
@@ -628,7 +648,7 @@
     }
 
     buildButtonBar(protocolBar, PROTOCOLS, selectedProtocol, PROTOCOL_LABELS, (val) => { selectedProtocol = val; addLog('Protocol switched to ' + val.toUpperCase()); });
-    buildButtonBar(transportBar, TRANSPORTS, selectedTransport, TRANSPORT_LABELS, (val) => { selectedTransport = val; addLog('Transport transport changed to ' + val.toUpperCase()); });
+    buildButtonBar(transportBar, TRANSPORTS, selectedTransport, TRANSPORT_LABELS, (val) => { selectedTransport = val; addLog('Transport changed to ' + val.toUpperCase()); });
 
     copyBtn.addEventListener('click', () => {
         navigator.clipboard.writeText(configDisplay.textContent).then(() => {
@@ -646,4 +666,4 @@
 })();
 </script>
 </body>
-          </html>
+</html>
